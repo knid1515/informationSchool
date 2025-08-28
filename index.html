@@ -12,18 +12,22 @@
     .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
     .animate-fade-in { animation: fadeIn .5s ease-in; }
     @keyframes fadeIn { from {opacity:0; transform: translateY(20px)} to {opacity:1; transform: translateY(0)} }
-    /* line clamp without plugin */
     .line-clamp-3{
       display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
     }
     .chip{ @apply px-3 py-1 rounded-full text-sm font-semibold; }
-    .toggle{ transform: translateX(0); transition: transform .2s; }
-    .toggle.on{ transform: translateX(100%); }
+    /* Added prose styles for detail modal content formatting */
+    .prose{
+        --tw-prose-body: #374151;
+        --tw-prose-headings: #1f2937;
+        --tw-prose-lead: #4b5563;
+        --tw-prose-links: #4f46e5;
+        --tw-prose-bold: #111827;
+    }
   </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
 
-  <!-- Header -->
   <header class="gradient-bg text-white shadow-lg">
     <div class="container mx-auto px-6 py-4">
       <div class="flex items-center justify-between">
@@ -53,8 +57,7 @@
   </header>
 
   <main class="container mx-auto px-6 py-8">
-    <!-- Form -->
-    <section id="formSection" class="animate-fade-in">
+    <section id="formSection" class="hidden animate-fade-in">
       <div class="max-w-2xl mx-auto">
         <div class="bg-white rounded-xl card-shadow p-8">
           <div class="text-center mb-8">
@@ -63,6 +66,7 @@
           </div>
 
           <form id="announceForm" class="space-y-6">
+            <input type="hidden" id="editId">
             <div class="grid md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">หมวดประกาศ</label>
@@ -153,7 +157,6 @@
       </div>
     </section>
 
-    <!-- List -->
     <section id="listSection" class="hidden animate-fade-in">
       <div class="max-w-6xl mx-auto">
         <div class="text-center mb-8">
@@ -161,7 +164,6 @@
           <p class="text-gray-600">ค้นหาและกรองประกาศที่เผยแพร่ล่าสุด</p>
         </div>
 
-        <!-- Controls -->
         <div class="bg-white rounded-xl card-shadow p-4 mb-6">
           <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
             <div class="flex-1">
@@ -194,10 +196,14 @@
             <label class="flex items-center gap-2 text-sm px-2">
               <input id="showExpired" type="checkbox"> แสดงประกาศหมดอายุ
             </label>
+            <div>
+                <button id="clearFiltersBtn" class="w-full md:w-auto bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2.5 rounded-lg transition">
+                    ล้างค่า
+                </button>
+            </div>
           </div>
         </div>
 
-        <!-- Quick category chips -->
         <div id="chipBar" class="mb-6 flex flex-wrap gap-2 justify-center"></div>
 
         <div id="announceList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -205,7 +211,6 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="gradient-bg text-white mt-16">
     <div class="container mx-auto px-6 py-8">
       <div class="grid md:grid-cols-3 gap-8">
@@ -260,7 +265,6 @@
     </div>
   </footer>
 
-  <!-- Success Modal -->
   <div id="successModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
     <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center animate-fade-in">
       <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -272,15 +276,37 @@
     </div>
   </div>
 
+  <div id="detailModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
+    <div id="detailModalContent" class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 animate-fade-in relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeDetailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+  </div>
+
+
   <script>
+    /* ---------- DOM Element Caching (ปรับปรุง) ---------- */
+    const formSection = document.getElementById('formSection');
+    const listSection = document.getElementById('listSection');
+    const announceForm = document.getElementById('announceForm');
+    const successModal = document.getElementById('successModal');
+    const detailModal = document.getElementById('detailModal');
+    const detailModalContent = document.getElementById('detailModalContent');
+    const announceList = document.getElementById('announceList');
+    const chipBar = document.getElementById('chipBar');
+    const filterCategory = document.getElementById('filterCategory');
+    const createBtn = document.querySelector('header button[onclick="showForm()"]');
+    const listBtn = document.querySelector('header button[onclick="showList()"]');
+
     /* ---------- Utilities ---------- */
-    const thDate = (d)=> new Date(d).toLocaleString('th-TH', {dateStyle:'medium', timeStyle:'short'});
-    const nowStr = ()=> new Date().toLocaleString('th-TH', {dateStyle:'medium', timeStyle:'short'});
+    const thDate = (d) => new Date(d).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
+    const nowStr = () => new Date().toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
     const LS_KEY = 'schoolAnnouncementsV1';
 
     const CATEGORIES = [
-      'ประกาศทั่วไป','กิจกรรม/ค่าย/ทัศนศึกษา','ด่วนที่สุด','แจ้งปิดเรียน/เลื่อน',
-      'ทุนการศึกษา','รับสมัคร/แข่งขัน','สุขภาพ/ความปลอดภัย','อื่น ๆ'
+      'ประกาศทั่วไป', 'กิจกรรม/ค่าย/ทัศนศึกษา', 'ด่วนที่สุด', 'แจ้งปิดเรียน/เลื่อน',
+      'ทุนการศึกษา', 'รับสมัคร/แข่งขัน', 'สุขภาพ/ความปลอดภัย', 'อื่น ๆ'
     ];
 
     function getUrgencyColor(u){
@@ -311,6 +337,12 @@
         return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
       }catch{ return []; }
     }
+    function escapeHTML(s){
+      return (s||'').replace(/[&<>"']/g, m => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[m]));
+    }
+
 
     /* ---------- Data (seed + local) ---------- */
     let announces = loadLocal();
@@ -344,27 +376,35 @@
       saveLocal(announces);
     }
 
-    /* ---------- View switching ---------- */
-    function showForm(){
-      document.getElementById('formSection').classList.remove('hidden');
-      document.getElementById('listSection').classList.add('hidden');
-      window.scrollTo({top:0, behavior:'smooth'});
+    /* ---------- View switching (ปรับปรุง) ---------- */
+    function showForm(isEditing = false) {
+      if (!isEditing) {
+          announceForm.reset();
+          document.getElementById('editId').value = '';
+          document.querySelector('#formSection h2').textContent = 'สร้าง/แจ้งประกาศ';
+      }
+      formSection.classList.remove('hidden');
+      listSection.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      createBtn.classList.add('bg-white/30');
+      listBtn.classList.remove('bg-white/30');
     }
-    function showList(){
-      document.getElementById('formSection').classList.add('hidden');
-      document.getElementById('listSection').classList.remove('hidden');
+
+    function showList() {
+      listSection.classList.remove('hidden');
+      formSection.classList.add('hidden');
       renderList();
-      window.scrollTo({top:0, behavior:'smooth'});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      listBtn.classList.add('bg-white/30');
+      createBtn.classList.remove('bg-white/30');
     }
 
     /* ---------- Populate category controls ---------- */
-    const filterCategory = document.getElementById('filterCategory');
     CATEGORIES.forEach(c=>{
       const opt = document.createElement('option'); opt.textContent=c; opt.value=c; filterCategory.appendChild(opt);
     });
 
     /* ---------- Chips ---------- */
-    const chipBar = document.getElementById('chipBar');
     function renderChips(active='all'){
       chipBar.innerHTML = '';
       const allBtn = chipElement('ทั้งหมด','all', active==='all');
@@ -381,12 +421,13 @@
       return btn;
     }
 
-    /* ---------- Create announcement ---------- */
-    document.getElementById('announceForm').addEventListener('submit', (e)=>{
+    /* ---------- CRUD Operations (เพิ่มและปรับปรุง) ---------- */
+    announceForm.addEventListener('submit', (e)=>{
       e.preventDefault();
+      const editId = document.getElementById('editId').value;
       const audiences = Array.from(document.querySelectorAll('.aud:checked')).map(i=>i.value);
-      const item = {
-        id: Date.now(),
+      
+      const itemData = {
         category: document.getElementById('category').value,
         urgency: document.getElementById('urgency').value,
         title: document.getElementById('title').value.trim(),
@@ -399,18 +440,99 @@
         publishDate: document.getElementById('publishDate').value ? new Date(document.getElementById('publishDate').value).toISOString() : new Date().toISOString(),
         expireDate: document.getElementById('expireDate').value ? new Date(document.getElementById('expireDate').value).toISOString() : ''
       };
-      announces.unshift(item);
+
+      if (editId) {
+        const index = announces.findIndex(item => item.id == editId);
+        if (index !== -1) {
+          announces[index] = { ...announces[index], ...itemData };
+        }
+      } else {
+        itemData.id = Date.now();
+        announces.unshift(itemData);
+      }
+
       saveLocal(announces);
-      document.getElementById('successModal').classList.remove('hidden');
-      document.getElementById('successModal').classList.add('flex');
-      e.target.reset();
+      successModal.classList.remove('hidden');
+      successModal.classList.add('flex');
+      announceForm.reset();
+      document.getElementById('editId').value = '';
     });
 
+    function editItem(id) {
+      const item = announces.find(it => it.id == id);
+      if (!item) return;
+
+      document.querySelector('#formSection h2').textContent = 'แก้ไขประกาศ';
+      document.getElementById('editId').value = item.id;
+      document.getElementById('category').value = item.category;
+      document.getElementById('urgency').value = item.urgency;
+      document.getElementById('title').value = item.title;
+      document.getElementById('content').value = item.content;
+      document.getElementById('author').value = item.author;
+      document.getElementById('contact').value = item.contact;
+      document.getElementById('link').value = item.link;
+      document.getElementById('pinned').checked = item.pinned;
+
+      const toLocalISOString = (iso) => iso ? new Date(new Date(iso).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : '';
+      document.getElementById('publishDate').value = toLocalISOString(item.publishDate);
+      document.getElementById('expireDate').value = toLocalISOString(item.expireDate);
+
+      document.querySelectorAll('.aud').forEach(chk => {
+          chk.checked = (item.audiences || []).includes(chk.value);
+      });
+
+      showForm(true);
+    }
+
+    function deleteItem(id) {
+      if (confirm('คุณต้องการลบประกาศนี้ใช่หรือไม่?')) {
+        announces = announces.filter(it => it.id != id);
+        saveLocal(announces);
+        renderList();
+      }
+    }
+
     function closeModal(){
-      document.getElementById('successModal').classList.add('hidden');
-      document.getElementById('successModal').classList.remove('flex');
+      successModal.classList.add('hidden');
+      successModal.classList.remove('flex');
       showList();
     }
+
+    /* ---------- Detail Modal Functions (ฟังก์ชันใหม่) ---------- */
+    function showDetailModal(id) {
+        const it = announces.find(item => item.id == id);
+        if (!it) return;
+
+        detailModalContent.innerHTML = `
+          <button onclick="closeDetailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+          <div class="flex items-center justify-between mb-4">
+              <div class="flex gap-2 items-center flex-wrap">
+                  ${it.pinned ? `<span title="ปักหมุด" class="chip bg-yellow-100 text-yellow-800">ปักหมุด</span>` : ''}
+                  <span class="chip ${getUrgencyColor(it.urgency)}">${it.urgency}</span>
+              </div>
+              <span class="chip ${getCategoryColor(it.category)}">${it.category}</span>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">${escapeHTML(it.title)}</h3>
+          <div class="text-xs text-gray-500 mb-4 border-b pb-3">
+            <span>ผู้ประกาศ: ${escapeHTML(it.author)} ${it.contact ? `· ${escapeHTML(it.contact)}` : ''}</span>
+            <br>
+            <span>เผยแพร่: ${thDate(it.publishDate)}${isExpired(it) ? ' · <span class="text-red-600">หมดอายุแล้ว</span>' : ''}</span>
+          </div>
+          <div class="prose max-w-none text-gray-700 mb-4" style="white-space: pre-wrap;">${escapeHTML(it.content)}</div>
+          <div class="flex flex-wrap gap-2 items-center mb-4"><strong class="text-sm">กลุ่มเป้าหมาย:</strong> ${audiencesBadges(it.audiences)}</div>
+          ${it.link ? `<div class="mt-4 text-sm"><strong>ลิงก์ที่เกี่ยวข้อง:</strong> <a class="text-indigo-600 hover:underline break-all" href="${encodeURI(it.link)}" target="_blank" rel="noopener">${escapeHTML(it.link)}</a></div>` : ''}
+        `;
+        detailModal.classList.remove('hidden');
+        detailModal.classList.add('flex');
+    }
+
+    function closeDetailModal() {
+        detailModal.classList.add('hidden');
+        detailModal.classList.remove('flex');
+    }
+
 
     /* ---------- Render list with filters ---------- */
     function isExpired(item){
@@ -428,7 +550,6 @@
 
       let data = announces.slice();
 
-      // filter
       data = data.filter(it=>{
         const hitQ = [it.title, it.content, it.author, it.category, it.urgency].join(' ').toLowerCase().includes(q);
         const hitCat = (cat==='all') || it.category===cat;
@@ -439,23 +560,19 @@
         return hitQ && hitCat && hitUrg && hitAud && passExp;
       });
 
-      // sort
       data.sort((a,b)=>{
         if(sort==='pinned'){
           if((b.pinned?1:0)!==(a.pinned?1:0)) return (b.pinned?1:0)-(a.pinned?1:0);
           return new Date(b.publishDate)-new Date(a.publishDate);
         }
         if(sort==='oldest') return new Date(a.publishDate)-new Date(b.publishDate);
-        return new Date(b.publishDate)-new Date(a.publishDate); // latest
+        return new Date(b.publishDate)-new Date(a.publishDate);
       });
 
-      // render
-      const wrap = document.getElementById('announceList');
-      wrap.innerHTML = data.map(it => cardHTML(it)).join('');
+      announceList.innerHTML = data.map(it => cardHTML(it)).join('');
 
-      // empty state
       if(data.length===0){
-        wrap.innerHTML = `
+        announceList.innerHTML = `
           <div class="col-span-full">
             <div class="bg-white rounded-xl card-shadow p-10 text-center text-gray-600">
               ไม่พบประกาศที่ตรงกับเงื่อนไขการค้นหา/กรอง
@@ -465,51 +582,72 @@
     }
 
     function audiencesBadges(auds){
-      return (auds||[]).map(a=>`<span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs">${a}</span>`).join(' ');
+      return (auds||[]).map(a=>`<span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">${a}</span>`).join(' ');
     }
 
     function cardHTML(it){
       const exp = isExpired(it);
       return `
-        <div class="bg-white rounded-xl card-shadow p-6 hover:shadow-xl transition transform hover:-translate-y-1 ${exp?'opacity-70':''}">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex gap-2 items-center">
-              ${it.pinned ? `<span title="ปักหมุด" class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold">ปักหมุด</span>`:''}
-              <span class="px-3 py-1 rounded-full text-sm font-semibold ${getUrgencyColor(it.urgency)}">${it.urgency}</span>
+        <div class="bg-white rounded-xl card-shadow flex flex-col transition transform hover:-translate-y-1 hover:shadow-xl ${exp ? 'opacity-60' : ''}">
+          <div class="p-6 flex-grow cursor-pointer hover:bg-gray-50/50 rounded-t-xl" onclick="showDetailModal(${it.id})">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex gap-2 items-center flex-wrap">
+                ${it.pinned ? `<span title="ปักหมุด" class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold">ปักหมุด</span>`:''}
+                <span class="chip ${getUrgencyColor(it.urgency)}">${it.urgency}</span>
+              </div>
+              <span class="chip ${getCategoryColor(it.category)}">${it.category}</span>
             </div>
-            <span class="px-3 py-1 rounded-full text-sm font-semibold ${getCategoryColor(it.category)}">${it.category}</span>
+            <h3 class="text-lg font-bold text-gray-800 mb-1">${escapeHTML(it.title)}</h3>
+            <p class="text-gray-600 text-sm line-clamp-3 mb-3">${escapeHTML(it.content)}</p>
+            <div class="flex flex-wrap gap-2 mb-3">${audiencesBadges(it.audiences)}</div>
           </div>
-          <h3 class="text-lg font-bold text-gray-800 mb-1">${escapeHTML(it.title)}</h3>
-          <p class="text-gray-600 text-sm line-clamp-3 mb-3">${escapeHTML(it.content)}</p>
-          <div class="flex flex-wrap gap-2 mb-3">${audiencesBadges(it.audiences)}</div>
-          ${it.link ? `<a class="text-indigo-600 hover:underline text-sm" href="${encodeURI(it.link)}" target="_blank" rel="noopener">ลิงก์ที่เกี่ยวข้อง</a>`:''}
-          <div class="border-t pt-3 mt-3 flex items-center justify-between text-xs text-gray-500">
-            <span>ผู้ประกาศ: ${escapeHTML(it.author)} ${it.contact?`· ${escapeHTML(it.contact)}`:''}</span>
-            <span>${thDate(it.publishDate)}${isExpired(it)?' · หมดอายุ':''}</span>
+          <div class="border-t p-3 bg-gray-50 rounded-b-xl flex items-center justify-between text-xs text-gray-500">
+            <div>
+              <span title="วันที่เผยแพร่">${thDate(it.publishDate)}</span>
+              ${isExpired(it) ? ' <span class="text-red-600 font-semibold">· หมดอายุ</span>' : ''}
+            </div>
+            <div class="flex gap-2">
+              <button onclick="editItem(${it.id})" class="text-gray-500 hover:text-indigo-600" title="แก้ไข">
+                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/></svg>
+              </button>
+              <button onclick="deleteItem(${it.id})" class="text-gray-500 hover:text-red-600" title="ลบ">
+                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"/></svg>
+              </button>
+            </div>
           </div>
         </div>
       `;
     }
 
-    function escapeHTML(s){
-      return (s||'').replace(/[&<>"']/g, m => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      }[m]));
+    /* ---------- Event wiring (ปรับปรุง) ---------- */
+    function setupEventListeners() {
+      ['q','filterCategory','filterUrgency','filterAudience','sortBy','showExpired']
+        .forEach(id => document.getElementById(id).addEventListener('input', renderList));
+      
+      document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+          document.getElementById('q').value = '';
+          document.getElementById('filterCategory').value = 'all';
+          document.getElementById('filterUrgency').value = 'all';
+          document.getElementById('filterAudience').value = 'all';
+          document.getElementById('sortBy').value = 'latest';
+          document.getElementById('showExpired').checked = false;
+          renderChips('all');
+          renderList();
+      });
     }
-
-    /* ---------- Event wiring ---------- */
-    ['q','filterCategory','filterUrgency','filterAudience','sortBy','showExpired']
-      .forEach(id => document.getElementById(id).addEventListener('input', renderList));
 
     /* ---------- Footer clock ---------- */
     function tick(){ document.getElementById('now').textContent = nowStr(); }
     setInterval(tick, 1000); tick();
 
-    /* ---------- Initial ---------- */
-    renderChips('all');
-    renderList();
-    // default view
-    showList();
+    /* ---------- Initial Load ---------- */
+    function init() {
+      renderChips('all');
+      setupEventListeners();
+      showList();
+    }
+
+    init();
   </script>
 </body>
 </html>
