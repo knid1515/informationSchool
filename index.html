@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบประชาสัมพันธ์ของโรงเรียน</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Sarabun', sans-serif; }
+    .gradient-bg { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+    .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+    .animate-fade-in { animation: fadeIn .5s ease-in; }
+    @keyframes fadeIn { from {opacity:0; transform: translateY(20px)} to {opacity:1; transform: translateY(0)} }
+    /* line clamp without plugin */
+    .line-clamp-3{
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .chip{ @apply px-3 py-1 rounded-full text-sm font-semibold; }
+    .toggle{ transform: translateX(0); transition: transform .2s; }
+    .toggle.on{ transform: translateX(100%); }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="gradient-bg text-white shadow-lg">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="bg-white/20 p-2 rounded-lg">
+            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M4 4h16v4H4V4zm0 6h10v10H4V10zm12 0h4v10h-4V10z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold">ระบบประชาสัมพันธ์ของโรงเรียน</h1>
+            <p class="text-blue-100 text-sm">ประกาศ · กิจกรรม · แจ้งด่วน · ผู้ปกครอง/นักเรียน/ครู</p>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="showForm()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition flex items-center gap-2">
+            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+            <span>สร้างประกาศ</span>
+          </button>
+          <button onclick="showList()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition flex items-center gap-2">
+            <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v1H2V5zm0 3h16v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8zm4 2h8v2H6v-2z" clip-rule="evenodd"/></svg>
+            <span>ดูประกาศ</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6 py-8">
+    <!-- Form -->
+    <section id="formSection" class="animate-fade-in">
+      <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-xl card-shadow p-8">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">สร้าง/แจ้งประกาศ</h2>
+            <p class="text-gray-600">กรอกข้อมูลประกาศที่ต้องการเผยแพร่</p>
+          </div>
+
+          <form id="announceForm" class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">หมวดประกาศ</label>
+                <select id="category" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+                  <option value="">เลือกหมวด</option>
+                  <option>ประกาศทั่วไป</option>
+                  <option>กิจกรรม/ค่าย/ทัศนศึกษา</option>
+                  <option>ด่วนที่สุด</option>
+                  <option>แจ้งปิดเรียน/เลื่อน</option>
+                  <option>ทุนการศึกษา</option>
+                  <option>รับสมัคร/แข่งขัน</option>
+                  <option>สุขภาพ/ความปลอดภัย</option>
+                  <option>อื่น ๆ</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">ความเร่งด่วน</label>
+                <select id="urgency" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+                  <option value="">เลือกระดับ</option>
+                  <option>ปกติ</option>
+                  <option>เร่งด่วน</option>
+                  <option>ด่วนมาก</option>
+                  <option>ด่วนที่สุด</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">หัวข้อประกาศ</label>
+              <input id="title" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="เช่น แจ้งเปิดภาคเรียนที่ 2/2568" required>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">เนื้อหาประกาศ</label>
+              <textarea id="content" rows="4" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="รายละเอียด เวลา สถานที่ เงื่อนไข" required></textarea>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">ผู้ประกาศ</label>
+                <input id="author" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="เช่น งานวิชาการ / ครูนิรนาม" required>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">ช่องทางติดต่อ (อีเมล/โทร)</label>
+                <input id="contact" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="เช่น 02-123-4567, info@school.ac.th">
+              </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">วันที่เผยแพร่</label>
+                <input id="publishDate" type="datetime-local" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">วันหมดอายุ (ถ้ามี)</label>
+                <input id="expireDate" type="datetime-local" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div class="flex items-end">
+                <label class="inline-flex items-center gap-3 w-full">
+                  <input id="pinned" type="checkbox" class="w-5 h-5">
+                  <span class="text-sm font-semibold text-gray-700">ปักหมุดประกาศ</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">กลุ่มเป้าหมาย</label>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <label class="flex items-center gap-2"><input type="checkbox" class="aud" value="นักเรียน" checked> นักเรียน</label>
+                <label class="flex items-center gap-2"><input type="checkbox" class="aud" value="ผู้ปกครอง" checked> ผู้ปกครอง</label>
+                <label class="flex items-center gap-2"><input type="checkbox" class="aud" value="ครู/บุคลากร" checked> ครู/บุคลากร</label>
+                <label class="flex items-center gap-2"><input type="checkbox" class="aud" value="ชุมชน"> ชุมชน</label>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">ลิงก์แนบ (หากมี)</label>
+              <input id="link" type="url" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="เช่น https://forms.gle/...">
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold py-4 px-6 rounded-lg transition transform hover:scale-[1.02] shadow-lg">
+                เผยแพร่ประกาศ
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- List -->
+    <section id="listSection" class="hidden animate-fade-in">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">รายการประกาศ</h2>
+          <p class="text-gray-600">ค้นหาและกรองประกาศที่เผยแพร่ล่าสุด</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="bg-white rounded-xl card-shadow p-4 mb-6">
+          <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+            <div class="flex-1">
+              <input id="q" type="text" class="w-full px-4 py-2.5 border rounded-lg" placeholder="พิมพ์ค้นหา หัวข้อ/เนื้อหา/ผู้ประกาศ">
+            </div>
+            <div>
+              <select id="filterCategory" class="px-4 py-2.5 border rounded-lg">
+                <option value="all">ทุกหมวด</option>
+              </select>
+            </div>
+            <div>
+              <select id="filterUrgency" class="px-4 py-2.5 border rounded-lg">
+                <option value="all">ทุกความเร่งด่วน</option>
+                <option>ปกติ</option><option>เร่งด่วน</option><option>ด่วนมาก</option><option>ด่วนที่สุด</option>
+              </select>
+            </div>
+            <div>
+              <select id="filterAudience" class="px-4 py-2.5 border rounded-lg">
+                <option value="all">ทุกกลุ่มเป้าหมาย</option>
+                <option>นักเรียน</option><option>ผู้ปกครอง</option><option>ครู/บุคลากร</option><option>ชุมชน</option>
+              </select>
+            </div>
+            <div>
+              <select id="sortBy" class="px-4 py-2.5 border rounded-lg">
+                <option value="latest">ล่าสุดก่อน</option>
+                <option value="oldest">เก่าสุดก่อน</option>
+                <option value="pinned">ปักหมุดก่อน</option>
+              </select>
+            </div>
+            <label class="flex items-center gap-2 text-sm px-2">
+              <input id="showExpired" type="checkbox"> แสดงประกาศหมดอายุ
+            </label>
+          </div>
+        </div>
+
+        <!-- Quick category chips -->
+        <div id="chipBar" class="mb-6 flex flex-wrap gap-2 justify-center"></div>
+
+        <div id="announceList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="gradient-bg text-white mt-16">
+    <div class="container mx-auto px-6 py-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="bg-white/20 p-2 rounded-lg">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v4H4V4zm0 6h10v10H4V10zm12 0h4v10h-4V10z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold">ประชาสัมพันธ์โรงเรียน</h3>
+              <p class="text-blue-100 text-sm">ข่าวสาร กิจกรรม ประกาศด่วน</p>
+            </div>
+          </div>
+          <p class="text-blue-100 text-sm">ช่องทางสื่อสารอย่างเป็นทางการเพื่อชุมชนการศึกษาของเรา</p>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold mb-4">ติดต่อโรงเรียน</h4>
+          <div class="space-y-2 text-blue-100 text-sm">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+              <span>โทร: 02-000-0000</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+              <span>อีเมล: info@school.ac.th</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+              <span>ที่อยู่: กรุงเทพมหานคร</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold mb-4">เมนูหลัก</h4>
+          <div class="space-y-2 text-blue-100 text-sm">
+            <button onclick="showForm()" class="block hover:text-white transition">สร้างประกาศ</button>
+            <button onclick="showList()" class="block hover:text-white transition">ดูประกาศ</button>
+            <a href="#" class="block hover:text-white transition">คู่มือการใช้งาน</a>
+            <a href="#" class="block hover:text-white transition">นโยบายความเป็นส่วนตัว</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-white/20 mt-8 pt-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-blue-100 text-sm mb-4 md:mb-0">© 2025 โรงเรียนของเรา. สงวนลิขสิทธิ์.</p>
+          <div class="text-blue-100 text-sm">อัปเดตล่าสุด: <span id="now"></span></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center animate-fade-in">
+      <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-green-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+      </div>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">บันทึกประกาศสำเร็จ!</h3>
+      <p class="text-gray-600 mb-6">ประกาศของคุณถูกบันทึกและพร้อมแสดงในรายการแล้ว</p>
+      <button onclick="closeModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition">ตกลง</button>
+    </div>
+  </div>
+
+  <script>
+    /* ---------- Utilities ---------- */
+    const thDate = (d)=> new Date(d).toLocaleString('th-TH', {dateStyle:'medium', timeStyle:'short'});
+    const nowStr = ()=> new Date().toLocaleString('th-TH', {dateStyle:'medium', timeStyle:'short'});
+    const LS_KEY = 'schoolAnnouncementsV1';
+
+    const CATEGORIES = [
+      'ประกาศทั่วไป','กิจกรรม/ค่าย/ทัศนศึกษา','ด่วนที่สุด','แจ้งปิดเรียน/เลื่อน',
+      'ทุนการศึกษา','รับสมัคร/แข่งขัน','สุขภาพ/ความปลอดภัย','อื่น ๆ'
+    ];
+
+    function getUrgencyColor(u){
+      return {
+        'ปกติ':'bg-gray-100 text-gray-800',
+        'เร่งด่วน':'bg-amber-100 text-amber-800',
+        'ด่วนมาก':'bg-orange-100 text-orange-800',
+        'ด่วนที่สุด':'bg-red-100 text-red-800'
+      }[u] || 'bg-gray-100 text-gray-800';
+    }
+
+    function getCategoryColor(c){
+      return {
+        'ประกาศทั่วไป':'bg-indigo-100 text-indigo-800',
+        'กิจกรรม/ค่าย/ทัศนศึกษา':'bg-blue-100 text-blue-800',
+        'ด่วนที่สุด':'bg-red-100 text-red-800',
+        'แจ้งปิดเรียน/เลื่อน':'bg-violet-100 text-violet-800',
+        'ทุนการศึกษา':'bg-emerald-100 text-emerald-800',
+        'รับสมัคร/แข่งขัน':'bg-cyan-100 text-cyan-800',
+        'สุขภาพ/ความปลอดภัย':'bg-pink-100 text-pink-800',
+        'อื่น ๆ':'bg-gray-100 text-gray-800'
+      }[c] || 'bg-gray-100 text-gray-800';
+    }
+
+    function saveLocal(data){ localStorage.setItem(LS_KEY, JSON.stringify(data)); }
+    function loadLocal(){
+      try{
+        return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+      }catch{ return []; }
+    }
+
+    /* ---------- Data (seed + local) ---------- */
+    let announces = loadLocal();
+    if(announces.length === 0){
+      announces = [
+        {
+          id: 1, category:'ประกาศทั่วไป', urgency:'ปกติ', title:'เปิดภาคเรียนที่ 2/2568',
+          content:'เปิดเรียนวันจันทร์ที่ 4 พฤศจิกายน 2568 ทุกระดับชั้น เวลา 08.00 น. แต่งเครื่องแบบนักเรียนให้เรียบร้อย',
+          author:'งานวิชาการ', contact:'02-000-0000', audiences:['นักเรียน','ผู้ปกครอง','ครู/บุคลากร'],
+          link:'', pinned:true, publishDate:new Date().toISOString(), expireDate:''
+        },
+        {
+          id: 2, category:'กิจกรรม/ค่าย/ทัศนศึกษา', urgency:'ปกติ', title:'รับสมัครชมรมภาคเรียนใหม่',
+          content:'เปิดรับสมัครชมรมกว่า 20 ชมรม สมัครผ่าน Google Form ภายในวันที่ 10 พ.ย. 2568',
+          author:'กิจการนักเรียน', contact:'advisor@school.ac.th', audiences:['นักเรียน','ครู/บุคลากร'],
+          link:'https://forms.gle/example', pinned:false, publishDate:new Date(Date.now()-86400000).toISOString(), expireDate:''
+        },
+        {
+          id: 3, category:'แจ้งปิดเรียน/เลื่อน', urgency:'เร่งด่วน', title:'เลื่อนการแข่งขันกีฬาสี',
+          content:'เลื่อนการแข่งขันกีฬาสีจาก 1 พ.ย. เป็น 8 พ.ย. 2568 เนื่องจากสภาพอากาศ',
+          author:'กลุ่มสาระสุขศึกษา', contact:'', audiences:['นักเรียน','ผู้ปกครอง','ครู/บุคลากร','ชุมชน'],
+          link:'', pinned:false, publishDate:new Date(Date.now()-2*86400000).toISOString(), expireDate:''
+        },
+        {
+          id: 4, category:'ด่วนที่สุด', urgency:'ด่วนที่สุด', title:'แจ้งเปลี่ยนเวลาเข้าเรียนชั่วคราว',
+          content:'วันที่ 30 ต.ค. 2568 เข้าแถว 08.30 น. ทุกระดับชั้น โปรดแจ้งผู้ปกครอง',
+          author:'ฝ่ายบริหาร', contact:'', audiences:['นักเรียน','ผู้ปกครอง','ครู/บุคลากร'],
+          link:'', pinned:true, publishDate:new Date(Date.now()-3*86400000).toISOString(), expireDate:new Date(Date.now()+2*86400000).toISOString()
+        }
+      ];
+      saveLocal(announces);
+    }
+
+    /* ---------- View switching ---------- */
+    function showForm(){
+      document.getElementById('formSection').classList.remove('hidden');
+      document.getElementById('listSection').classList.add('hidden');
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    function showList(){
+      document.getElementById('formSection').classList.add('hidden');
+      document.getElementById('listSection').classList.remove('hidden');
+      renderList();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    /* ---------- Populate category controls ---------- */
+    const filterCategory = document.getElementById('filterCategory');
+    CATEGORIES.forEach(c=>{
+      const opt = document.createElement('option'); opt.textContent=c; opt.value=c; filterCategory.appendChild(opt);
+    });
+
+    /* ---------- Chips ---------- */
+    const chipBar = document.getElementById('chipBar');
+    function renderChips(active='all'){
+      chipBar.innerHTML = '';
+      const allBtn = chipElement('ทั้งหมด','all', active==='all');
+      chipBar.appendChild(allBtn);
+      CATEGORIES.forEach(c=>{
+        chipBar.appendChild(chipElement(c,c, active===c));
+      });
+    }
+    function chipElement(label, value, active){
+      const btn = document.createElement('button');
+      btn.className = `px-4 py-2 rounded-full ${active?'bg-indigo-600 text-white':'bg-gray-200 text-gray-700'} hover:opacity-90 transition`;
+      btn.textContent = label;
+      btn.onclick = ()=>{ document.getElementById('filterCategory').value = value; renderChips(value); renderList(); };
+      return btn;
+    }
+
+    /* ---------- Create announcement ---------- */
+    document.getElementById('announceForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const audiences = Array.from(document.querySelectorAll('.aud:checked')).map(i=>i.value);
+      const item = {
+        id: Date.now(),
+        category: document.getElementById('category').value,
+        urgency: document.getElementById('urgency').value,
+        title: document.getElementById('title').value.trim(),
+        content: document.getElementById('content').value.trim(),
+        author: document.getElementById('author').value.trim(),
+        contact: document.getElementById('contact').value.trim(),
+        audiences,
+        link: document.getElementById('link').value.trim(),
+        pinned: document.getElementById('pinned').checked,
+        publishDate: document.getElementById('publishDate').value ? new Date(document.getElementById('publishDate').value).toISOString() : new Date().toISOString(),
+        expireDate: document.getElementById('expireDate').value ? new Date(document.getElementById('expireDate').value).toISOString() : ''
+      };
+      announces.unshift(item);
+      saveLocal(announces);
+      document.getElementById('successModal').classList.remove('hidden');
+      document.getElementById('successModal').classList.add('flex');
+      e.target.reset();
+    });
+
+    function closeModal(){
+      document.getElementById('successModal').classList.add('hidden');
+      document.getElementById('successModal').classList.remove('flex');
+      showList();
+    }
+
+    /* ---------- Render list with filters ---------- */
+    function isExpired(item){
+      if(!item.expireDate) return false;
+      return new Date(item.expireDate).getTime() < Date.now();
+    }
+
+    function renderList(){
+      const q = (document.getElementById('q').value || '').toLowerCase();
+      const cat = document.getElementById('filterCategory').value;
+      const urg = document.getElementById('filterUrgency').value;
+      const aud = document.getElementById('filterAudience').value;
+      const sort = document.getElementById('sortBy').value;
+      const showExp = document.getElementById('showExpired').checked;
+
+      let data = announces.slice();
+
+      // filter
+      data = data.filter(it=>{
+        const hitQ = [it.title, it.content, it.author, it.category, it.urgency].join(' ').toLowerCase().includes(q);
+        const hitCat = (cat==='all') || it.category===cat;
+        const hitUrg = (urg==='all') || it.urgency===urg;
+        const hitAud = (aud==='all') || (it.audiences||[]).includes(aud);
+        const exp = isExpired(it);
+        const passExp = showExp ? true : !exp;
+        return hitQ && hitCat && hitUrg && hitAud && passExp;
+      });
+
+      // sort
+      data.sort((a,b)=>{
+        if(sort==='pinned'){
+          if((b.pinned?1:0)!==(a.pinned?1:0)) return (b.pinned?1:0)-(a.pinned?1:0);
+          return new Date(b.publishDate)-new Date(a.publishDate);
+        }
+        if(sort==='oldest') return new Date(a.publishDate)-new Date(b.publishDate);
+        return new Date(b.publishDate)-new Date(a.publishDate); // latest
+      });
+
+      // render
+      const wrap = document.getElementById('announceList');
+      wrap.innerHTML = data.map(it => cardHTML(it)).join('');
+
+      // empty state
+      if(data.length===0){
+        wrap.innerHTML = `
+          <div class="col-span-full">
+            <div class="bg-white rounded-xl card-shadow p-10 text-center text-gray-600">
+              ไม่พบประกาศที่ตรงกับเงื่อนไขการค้นหา/กรอง
+            </div>
+          </div>`;
+      }
+    }
+
+    function audiencesBadges(auds){
+      return (auds||[]).map(a=>`<span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs">${a}</span>`).join(' ');
+    }
+
+    function cardHTML(it){
+      const exp = isExpired(it);
+      return `
+        <div class="bg-white rounded-xl card-shadow p-6 hover:shadow-xl transition transform hover:-translate-y-1 ${exp?'opacity-70':''}">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex gap-2 items-center">
+              ${it.pinned ? `<span title="ปักหมุด" class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold">ปักหมุด</span>`:''}
+              <span class="px-3 py-1 rounded-full text-sm font-semibold ${getUrgencyColor(it.urgency)}">${it.urgency}</span>
+            </div>
+            <span class="px-3 py-1 rounded-full text-sm font-semibold ${getCategoryColor(it.category)}">${it.category}</span>
+          </div>
+          <h3 class="text-lg font-bold text-gray-800 mb-1">${escapeHTML(it.title)}</h3>
+          <p class="text-gray-600 text-sm line-clamp-3 mb-3">${escapeHTML(it.content)}</p>
+          <div class="flex flex-wrap gap-2 mb-3">${audiencesBadges(it.audiences)}</div>
+          ${it.link ? `<a class="text-indigo-600 hover:underline text-sm" href="${encodeURI(it.link)}" target="_blank" rel="noopener">ลิงก์ที่เกี่ยวข้อง</a>`:''}
+          <div class="border-t pt-3 mt-3 flex items-center justify-between text-xs text-gray-500">
+            <span>ผู้ประกาศ: ${escapeHTML(it.author)} ${it.contact?`· ${escapeHTML(it.contact)}`:''}</span>
+            <span>${thDate(it.publishDate)}${isExpired(it)?' · หมดอายุ':''}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function escapeHTML(s){
+      return (s||'').replace(/[&<>"']/g, m => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[m]));
+    }
+
+    /* ---------- Event wiring ---------- */
+    ['q','filterCategory','filterUrgency','filterAudience','sortBy','showExpired']
+      .forEach(id => document.getElementById(id).addEventListener('input', renderList));
+
+    /* ---------- Footer clock ---------- */
+    function tick(){ document.getElementById('now').textContent = nowStr(); }
+    setInterval(tick, 1000); tick();
+
+    /* ---------- Initial ---------- */
+    renderChips('all');
+    renderList();
+    // default view
+    showList();
+  </script>
+</body>
+</html>
