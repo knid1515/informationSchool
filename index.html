@@ -16,11 +16,9 @@
       display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
     }
     .chip{ @apply px-3 py-1 rounded-full text-sm font-semibold; }
-    /* Added prose styles for detail modal content formatting */
     .prose{
         --tw-prose-body: #374151;
         --tw-prose-headings: #1f2937;
-        --tw-prose-lead: #4b5563;
         --tw-prose-links: #4f46e5;
         --tw-prose-bold: #111827;
     }
@@ -39,7 +37,7 @@
           </div>
           <div>
             <h1 class="text-2xl font-bold">ระบบประชาสัมพันธ์ของโรงเรียน</h1>
-            <p class="text-blue-100 text-sm">ประกาศ · กิจกรรม · แจ้งด่วน · ผู้ปกครอง/นักเรียน/ครู</p>
+            <p class="text-blue-100 text-sm">ประกาศ · กิจกรรม · แจ้งด่วน</p>
           </div>
         </div>
         <div class="flex gap-2">
@@ -64,7 +62,6 @@
             <h2 class="text-3xl font-bold text-gray-800 mb-2">สร้าง/แจ้งประกาศ</h2>
             <p class="text-gray-600">กรอกข้อมูลประกาศที่ต้องการเผยแพร่</p>
           </div>
-
           <form id="announceForm" class="space-y-6">
             <input type="hidden" id="editId">
             <div class="grid md:grid-cols-2 gap-6">
@@ -93,28 +90,24 @@
                 </select>
               </div>
             </div>
-
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">หัวข้อประกาศ</label>
-              <input id="title" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="เช่น แจ้งเปิดภาคเรียนที่ 2/2568" required>
+              <input id="title" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" required>
             </div>
-
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">เนื้อหาประกาศ</label>
-              <textarea id="content" rows="4" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="รายละเอียด เวลา สถานที่ เงื่อนไข" required></textarea>
+              <textarea id="content" rows="4" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" required></textarea>
             </div>
-
             <div class="grid md:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">ผู้ประกาศ</label>
-                <input id="author" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="เช่น งานวิชาการ / ครูนิรนาม" required>
+                <input id="author" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" required>
               </div>
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">ช่องทางติดต่อ (อีเมล/โทร)</label>
-                <input id="contact" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="เช่น 02-123-4567, info@school.ac.th">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">ช่องทางติดต่อ (ถ้ามี)</label>
+                <input id="contact" type="text" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500">
               </div>
             </div>
-
             <div class="grid md:grid-cols-3 gap-6">
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">วันที่เผยแพร่</label>
@@ -131,7 +124,6 @@
                 </label>
               </div>
             </div>
-
             <div>
               <label class="block text-sm font-semibold text-gray-700 mb-2">กลุ่มเป้าหมาย</label>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -141,12 +133,10 @@
                 <label class="flex items-center gap-2"><input type="checkbox" class="aud" value="ชุมชน"> ชุมชน</label>
               </div>
             </div>
-
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">ลิงก์แนบ (หากมี)</label>
-              <input id="link" type="url" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="เช่น https://forms.gle/...">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">ลิงก์แนบ (ถ้ามี)</label>
+              <input id="link" type="url" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500">
             </div>
-
             <div class="pt-2">
               <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-semibold py-4 px-6 rounded-lg transition transform hover:scale-[1.02] shadow-lg">
                 เผยแพร่ประกาศ
@@ -163,130 +153,44 @@
           <h2 class="text-3xl font-bold text-gray-800 mb-2">รายการประกาศ</h2>
           <p class="text-gray-600">ค้นหาและกรองประกาศที่เผยแพร่ล่าสุด</p>
         </div>
-
         <div class="bg-white rounded-xl card-shadow p-4 mb-6">
           <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
             <div class="flex-1">
-              <input id="q" type="text" class="w-full px-4 py-2.5 border rounded-lg" placeholder="พิมพ์ค้นหา หัวข้อ/เนื้อหา/ผู้ประกาศ">
+              <input id="q" type="text" class="w-full px-4 py-2.5 border rounded-lg" placeholder="ค้นหา...">
             </div>
-            <div>
-              <select id="filterCategory" class="px-4 py-2.5 border rounded-lg">
-                <option value="all">ทุกหมวด</option>
-              </select>
-            </div>
-            <div>
-              <select id="filterUrgency" class="px-4 py-2.5 border rounded-lg">
-                <option value="all">ทุกความเร่งด่วน</option>
-                <option>ปกติ</option><option>เร่งด่วน</option><option>ด่วนมาก</option><option>ด่วนที่สุด</option>
-              </select>
-            </div>
-            <div>
-              <select id="filterAudience" class="px-4 py-2.5 border rounded-lg">
-                <option value="all">ทุกกลุ่มเป้าหมาย</option>
-                <option>นักเรียน</option><option>ผู้ปกครอง</option><option>ครู/บุคลากร</option><option>ชุมชน</option>
-              </select>
-            </div>
-            <div>
-              <select id="sortBy" class="px-4 py-2.5 border rounded-lg">
-                <option value="latest">ล่าสุดก่อน</option>
-                <option value="oldest">เก่าสุดก่อน</option>
-                <option value="pinned">ปักหมุดก่อน</option>
-              </select>
-            </div>
-            <label class="flex items-center gap-2 text-sm px-2">
-              <input id="showExpired" type="checkbox"> แสดงประกาศหมดอายุ
-            </label>
-            <div>
-                <button id="clearFiltersBtn" class="w-full md:w-auto bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2.5 rounded-lg transition">
-                    ล้างค่า
-                </button>
-            </div>
+            <select id="filterCategory" class="px-4 py-2.5 border rounded-lg"><option value="all">ทุกหมวด</option></select>
+            <select id="filterUrgency" class="px-4 py-2.5 border rounded-lg"><option value="all">ทุกความเร่งด่วน</option><option>ปกติ</option><option>เร่งด่วน</option><option>ด่วนมาก</option><option>ด่วนที่สุด</option></select>
+            <select id="filterAudience" class="px-4 py-2.5 border rounded-lg"><option value="all">ทุกกลุ่มเป้าหมาย</option><option>นักเรียน</option><option>ผู้ปกครอง</option><option>ครู/บุคลากร</option><option>ชุมชน</option></select>
+            <select id="sortBy" class="px-4 py-2.5 border rounded-lg"><option value="latest">ล่าสุดก่อน</option><option value="oldest">เก่าสุดก่อน</option><option value="pinned">ปักหมุดก่อน</option></select>
+            <label class="flex items-center gap-2 text-sm px-2"><input id="showExpired" type="checkbox"> แสดงหมดอายุ</label>
+            <button id="clearFiltersBtn" class="w-full md:w-auto bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2.5 rounded-lg transition">ล้างค่า</button>
           </div>
         </div>
-
         <div id="chipBar" class="mb-6 flex flex-wrap gap-2 justify-center"></div>
-
         <div id="announceList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       </div>
     </section>
   </main>
-
-  <footer class="gradient-bg text-white mt-16">
-    <div class="container mx-auto px-6 py-8">
-      <div class="grid md:grid-cols-3 gap-8">
-        <div>
-          <div class="flex items-center space-x-3 mb-4">
-            <div class="bg-white/20 p-2 rounded-lg">
-              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v4H4V4zm0 6h10v10H4V10zm12 0h4v10h-4V10z"/></svg>
-            </div>
-            <div>
-              <h3 class="text-lg font-bold">ประชาสัมพันธ์โรงเรียน</h3>
-              <p class="text-blue-100 text-sm">ข่าวสาร กิจกรรม ประกาศด่วน</p>
-            </div>
-          </div>
-          <p class="text-blue-100 text-sm">ช่องทางสื่อสารอย่างเป็นทางการเพื่อชุมชนการศึกษาของเรา</p>
-        </div>
-
-        <div>
-          <h4 class="text-lg font-semibold mb-4">ติดต่อโรงเรียน</h4>
-          <div class="space-y-2 text-blue-100 text-sm">
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-              <span>โทร: 02-000-0000</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-              <span>อีเมล: info@school.ac.th</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
-              <span>ที่อยู่: กรุงเทพมหานคร</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h4 class="text-lg font-semibold mb-4">เมนูหลัก</h4>
-          <div class="space-y-2 text-blue-100 text-sm">
-            <button onclick="showForm()" class="block hover:text-white transition">สร้างประกาศ</button>
-            <button onclick="showList()" class="block hover:text-white transition">ดูประกาศ</button>
-            <a href="#" class="block hover:text-white transition">คู่มือการใช้งาน</a>
-            <a href="#" class="block hover:text-white transition">นโยบายความเป็นส่วนตัว</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="border-t border-white/20 mt-8 pt-6">
-        <div class="flex flex-col md:flex-row justify-between items-center">
-          <p class="text-blue-100 text-sm mb-4 md:mb-0">© 2025 โรงเรียนของเรา. สงวนลิขสิทธิ์.</p>
-          <div class="text-blue-100 text-sm">อัปเดตล่าสุด: <span id="now"></span></div>
-        </div>
-      </div>
-    </div>
-  </footer>
-
+  
   <div id="successModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
     <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center animate-fade-in">
       <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
         <svg class="w-8 h-8 text-green-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
       </div>
-      <h3 class="text-xl font-bold text-gray-800 mb-2">บันทึกประกาศสำเร็จ!</h3>
-      <p class="text-gray-600 mb-6">ประกาศของคุณถูกบันทึกและพร้อมแสดงในรายการแล้ว</p>
+      <h3 class="text-xl font-bold text-gray-800 mb-2">สำเร็จ!</h3>
+      <p class="text-gray-600 mb-6">ดำเนินการเรียบร้อยแล้ว</p>
       <button onclick="closeModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition">ตกลง</button>
     </div>
   </div>
-
   <div id="detailModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4">
-    <div id="detailModalContent" class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 animate-fade-in relative max-h-[90vh] overflow-y-auto">
-      <button onclick="closeDetailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-      </button>
-    </div>
+    <div id="detailModalContent" class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 animate-fade-in relative max-h-[90vh] overflow-y-auto"></div>
   </div>
 
-
   <script>
-    /* ---------- DOM Element Caching (ปรับปรุง) ---------- */
+    /* ---------- Config & DOM Caching ---------- */
+    const API_URL = 'https://script.google.com/macros/s/AKfycbziMGN6YFDixrR20Avqr6duiJNgFco5_qrGtFY7nfmtztide0IqM7Yp5NJ0iitnYKvk/exec';
+    let announces = [];
+
     const formSection = document.getElementById('formSection');
     const listSection = document.getElementById('listSection');
     const announceForm = document.getElementById('announceForm');
@@ -298,353 +202,221 @@
     const filterCategory = document.getElementById('filterCategory');
     const createBtn = document.querySelector('header button[onclick="showForm()"]');
     const listBtn = document.querySelector('header button[onclick="showList()"]');
+    
+    const CATEGORIES = ['ประกาศทั่วไป', 'กิจกรรม/ค่าย/ทัศนศึกษา', 'ด่วนที่สุด', 'แจ้งปิดเรียน/เลื่อน', 'ทุนการศึกษา', 'รับสมัคร/แข่งขัน', 'สุขภาพ/ความปลอดภัย', 'อื่น ๆ'];
 
     /* ---------- Utilities ---------- */
-    const thDate = (d) => new Date(d).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
-    const nowStr = () => new Date().toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
-    const LS_KEY = 'schoolAnnouncementsV1';
+    const thDate = (d) => d ? new Date(d).toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+    const toLocalISOString = (iso) => iso ? new Date(new Date(iso).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : '';
+    const getUrgencyColor = u => ({'ปกติ':'bg-gray-100 text-gray-800','เร่งด่วน':'bg-amber-100 text-amber-800','ด่วนมาก':'bg-orange-100 text-orange-800','ด่วนที่สุด':'bg-red-100 text-red-800'}[u] || 'bg-gray-100');
+    const getCategoryColor = c => ({'ประกาศทั่วไป':'bg-indigo-100 text-indigo-800','กิจกรรม/ค่าย/ทัศนศึกษา':'bg-blue-100 text-blue-800','ด่วนที่สุด':'bg-red-100 text-red-800','แจ้งปิดเรียน/เลื่อน':'bg-violet-100 text-violet-800','ทุนการศึกษา':'bg-emerald-100 text-emerald-800','รับสมัคร/แข่งขัน':'bg-cyan-100 text-cyan-800','สุขภาพ/ความปลอดภัย':'bg-pink-100 text-pink-800','อื่น ๆ':'bg-gray-100 text-gray-800'}[c] || 'bg-gray-100');
+    const escapeHTML = s => (s || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
-    const CATEGORIES = [
-      'ประกาศทั่วไป', 'กิจกรรม/ค่าย/ทัศนศึกษา', 'ด่วนที่สุด', 'แจ้งปิดเรียน/เลื่อน',
-      'ทุนการศึกษา', 'รับสมัคร/แข่งขัน', 'สุขภาพ/ความปลอดภัย', 'อื่น ๆ'
-    ];
-
-    function getUrgencyColor(u){
-      return {
-        'ปกติ':'bg-gray-100 text-gray-800',
-        'เร่งด่วน':'bg-amber-100 text-amber-800',
-        'ด่วนมาก':'bg-orange-100 text-orange-800',
-        'ด่วนที่สุด':'bg-red-100 text-red-800'
-      }[u] || 'bg-gray-100 text-gray-800';
-    }
-
-    function getCategoryColor(c){
-      return {
-        'ประกาศทั่วไป':'bg-indigo-100 text-indigo-800',
-        'กิจกรรม/ค่าย/ทัศนศึกษา':'bg-blue-100 text-blue-800',
-        'ด่วนที่สุด':'bg-red-100 text-red-800',
-        'แจ้งปิดเรียน/เลื่อน':'bg-violet-100 text-violet-800',
-        'ทุนการศึกษา':'bg-emerald-100 text-emerald-800',
-        'รับสมัคร/แข่งขัน':'bg-cyan-100 text-cyan-800',
-        'สุขภาพ/ความปลอดภัย':'bg-pink-100 text-pink-800',
-        'อื่น ๆ':'bg-gray-100 text-gray-800'
-      }[c] || 'bg-gray-100 text-gray-800';
-    }
-
-    function saveLocal(data){ localStorage.setItem(LS_KEY, JSON.stringify(data)); }
-    function loadLocal(){
-      try{
-        return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-      }catch{ return []; }
-    }
-    function escapeHTML(s){
-      return (s||'').replace(/[&<>"']/g, m => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-      }[m]));
-    }
-
-
-    /* ---------- Data (seed + local) ---------- */
-    let announces = loadLocal();
-    if(announces.length === 0){
-      announces = [
-        {
-          id: 1, category:'ประกาศทั่วไป', urgency:'ปกติ', title:'เปิดภาคเรียนที่ 2/2568',
-          content:'เปิดเรียนวันจันทร์ที่ 4 พฤศจิกายน 2568 ทุกระดับชั้น เวลา 08.00 น. แต่งเครื่องแบบนักเรียนให้เรียบร้อย',
-          author:'งานวิชาการ', contact:'02-000-0000', audiences:['นักเรียน','ผู้ปกครอง','ครู/บุคลากร'],
-          link:'', pinned:true, publishDate:new Date().toISOString(), expireDate:''
-        },
-        {
-          id: 2, category:'กิจกรรม/ค่าย/ทัศนศึกษา', urgency:'ปกติ', title:'รับสมัครชมรมภาคเรียนใหม่',
-          content:'เปิดรับสมัครชมรมกว่า 20 ชมรม สมัครผ่าน Google Form ภายในวันที่ 10 พ.ย. 2568',
-          author:'กิจการนักเรียน', contact:'advisor@school.ac.th', audiences:['นักเรียน','ครู/บุคลากร'],
-          link:'https://forms.gle/example', pinned:false, publishDate:new Date(Date.now()-86400000).toISOString(), expireDate:''
-        },
-        {
-          id: 3, category:'แจ้งปิดเรียน/เลื่อน', urgency:'เร่งด่วน', title:'เลื่อนการแข่งขันกีฬาสี',
-          content:'เลื่อนการแข่งขันกีฬาสีจาก 1 พ.ย. เป็น 8 พ.ย. 2568 เนื่องจากสภาพอากาศ',
-          author:'กลุ่มสาระสุขศึกษา', contact:'', audiences:['นักเรียน','ผู้ปกครอง','ครู/บุคลากร','ชุมชน'],
-          link:'', pinned:false, publishDate:new Date(Date.now()-2*86400000).toISOString(), expireDate:''
-        },
-        {
-          id: 4, category:'ด่วนที่สุด', urgency:'ด่วนที่สุด', title:'แจ้งเปลี่ยนเวลาเข้าเรียนชั่วคราว',
-          content:'วันที่ 30 ต.ค. 2568 เข้าแถว 08.30 น. ทุกระดับชั้น โปรดแจ้งผู้ปกครอง',
-          author:'ฝ่ายบริหาร', contact:'', audiences:['นักเรียน','ผู้ปกครอง','ครู/บุคลากร'],
-          link:'', pinned:true, publishDate:new Date(Date.now()-3*86400000).toISOString(), expireDate:new Date(Date.now()+2*86400000).toISOString()
-        }
-      ];
-      saveLocal(announces);
-    }
-
-    /* ---------- View switching (ปรับปรุง) ---------- */
-    function showForm(isEditing = false) {
+    /* ---------- View Switching & Modals ---------- */
+    const showView = (view) => {
+      const isForm = view === 'form';
+      formSection.classList.toggle('hidden', !isForm);
+      listSection.classList.toggle('hidden', isForm);
+      createBtn.classList.toggle('bg-white/30', isForm);
+      listBtn.classList.toggle('bg-white/30', !isForm);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    const showForm = (isEditing = false) => {
       if (!isEditing) {
-          announceForm.reset();
-          document.getElementById('editId').value = '';
-          document.querySelector('#formSection h2').textContent = 'สร้าง/แจ้งประกาศ';
+        announceForm.reset();
+        document.getElementById('editId').value = '';
+        document.querySelector('#formSection h2').textContent = 'สร้าง/แจ้งประกาศ';
       }
-      formSection.classList.remove('hidden');
-      listSection.classList.add('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      createBtn.classList.add('bg-white/30');
-      listBtn.classList.remove('bg-white/30');
+      showView('form');
+    };
+    const showList = () => { showView('list'); fetchAnnouncements(); };
+    const closeModal = () => { successModal.classList.add('hidden'); showList(); };
+    const closeDetailModal = () => detailModal.classList.add('hidden');
+
+    /* ---------- API Communication ---------- */
+    async function fetchAnnouncements() {
+        announceList.innerHTML = `<div class="col-span-full text-center p-8">กำลังโหลดข้อมูล...</div>`;
+        try {
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error('Network error');
+            announces = await response.json();
+            renderList();
+        } catch (error) {
+            announceList.innerHTML = `<div class="col-span-full text-center text-red-500 p-8">ไม่สามารถโหลดข้อมูลได้: ${error.message}</div>`;
+        }
     }
 
-    function showList() {
-      listSection.classList.remove('hidden');
-      formSection.classList.add('hidden');
-      renderList();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      listBtn.classList.add('bg-white/30');
-      createBtn.classList.remove('bg-white/30');
+    async function postData(action, data) {
+        const body = { action, data };
+        if (data.id) body.data.id = data.id;
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            });
+            const result = await response.json();
+            if (result.status !== 'success') throw new Error(result.message);
+            successModal.classList.remove('hidden');
+        } catch (error) {
+            alert(`เกิดข้อผิดพลาด: ${error.message}`);
+        }
     }
 
-    /* ---------- Populate category controls ---------- */
-    CATEGORIES.forEach(c=>{
-      const opt = document.createElement('option'); opt.textContent=c; opt.value=c; filterCategory.appendChild(opt);
+    announceForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const editId = document.getElementById('editId').value;
+        const itemData = {
+            id: editId,
+            category: document.getElementById('category').value,
+            urgency: document.getElementById('urgency').value,
+            title: document.getElementById('title').value.trim(),
+            content: document.getElementById('content').value.trim(),
+            author: document.getElementById('author').value.trim(),
+            contact: document.getElementById('contact').value.trim(),
+            audiences: Array.from(document.querySelectorAll('.aud:checked')).map(i => i.value),
+            link: document.getElementById('link').value.trim(),
+            pinned: document.getElementById('pinned').checked,
+            publishDate: document.getElementById('publishDate').value ? new Date(document.getElementById('publishDate').value).toISOString() : new Date().toISOString(),
+            expireDate: document.getElementById('expireDate').value ? new Date(document.getElementById('expireDate').value).toISOString() : ''
+        };
+        postData(editId ? 'update' : 'create', itemData);
     });
 
-    /* ---------- Chips ---------- */
-    function renderChips(active='all'){
-      chipBar.innerHTML = '';
-      const allBtn = chipElement('ทั้งหมด','all', active==='all');
-      chipBar.appendChild(allBtn);
-      CATEGORIES.forEach(c=>{
-        chipBar.appendChild(chipElement(c,c, active===c));
-      });
-    }
-    function chipElement(label, value, active){
-      const btn = document.createElement('button');
-      btn.className = `px-4 py-2 rounded-full ${active?'bg-indigo-600 text-white':'bg-gray-200 text-gray-700'} hover:opacity-90 transition`;
-      btn.textContent = label;
-      btn.onclick = ()=>{ document.getElementById('filterCategory').value = value; renderChips(value); renderList(); };
-      return btn;
-    }
+    const deleteItem = (id) => { if (confirm('ยืนยันการลบ?')) postData('delete', { id }); };
 
-    /* ---------- CRUD Operations (เพิ่มและปรับปรุง) ---------- */
-    announceForm.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const editId = document.getElementById('editId').value;
-      const audiences = Array.from(document.querySelectorAll('.aud:checked')).map(i=>i.value);
-      
-      const itemData = {
-        category: document.getElementById('category').value,
-        urgency: document.getElementById('urgency').value,
-        title: document.getElementById('title').value.trim(),
-        content: document.getElementById('content').value.trim(),
-        author: document.getElementById('author').value.trim(),
-        contact: document.getElementById('contact').value.trim(),
-        audiences,
-        link: document.getElementById('link').value.trim(),
-        pinned: document.getElementById('pinned').checked,
-        publishDate: document.getElementById('publishDate').value ? new Date(document.getElementById('publishDate').value).toISOString() : new Date().toISOString(),
-        expireDate: document.getElementById('expireDate').value ? new Date(document.getElementById('expireDate').value).toISOString() : ''
-      };
+    /* ---------- Rendering ---------- */
+    const isExpired = item => item.expireDate && new Date(item.expireDate).getTime() < Date.now();
+    const audiencesBadges = auds => (auds || []).map(a => `<span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">${a}</span>`).join(' ');
 
-      if (editId) {
-        const index = announces.findIndex(item => item.id == editId);
-        if (index !== -1) {
-          announces[index] = { ...announces[index], ...itemData };
-        }
-      } else {
-        itemData.id = Date.now();
-        announces.unshift(itemData);
-      }
+    function renderList() {
+        const q = (document.getElementById('q').value || '').toLowerCase();
+        const cat = document.getElementById('filterCategory').value;
+        const urg = document.getElementById('filterUrgency').value;
+        const aud = document.getElementById('filterAudience').value;
+        const sort = document.getElementById('sortBy').value;
+        const showExp = document.getElementById('showExpired').checked;
 
-      saveLocal(announces);
-      successModal.classList.remove('hidden');
-      successModal.classList.add('flex');
-      announceForm.reset();
-      document.getElementById('editId').value = '';
-    });
+        let data = announces.filter(it => {
+            const exp = isExpired(it);
+            return (showExp || !exp) &&
+                   (cat === 'all' || it.category === cat) &&
+                   (urg === 'all' || it.urgency === urg) &&
+                   (aud === 'all' || (it.audiences || []).includes(aud)) &&
+                   [it.title, it.content, it.author].join(' ').toLowerCase().includes(q);
+        });
 
-    function editItem(id) {
-      const item = announces.find(it => it.id == id);
-      if (!item) return;
+        data.sort((a, b) => {
+            if (sort === 'pinned') {
+                if ((b.pinned ? 1 : 0) !== (a.pinned ? 1 : 0)) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
+            }
+            const dateA = new Date(a.publishDate);
+            const dateB = new Date(b.publishDate);
+            return sort === 'oldest' ? dateA - dateB : dateB - dateA;
+        });
 
-      document.querySelector('#formSection h2').textContent = 'แก้ไขประกาศ';
-      document.getElementById('editId').value = item.id;
-      document.getElementById('category').value = item.category;
-      document.getElementById('urgency').value = item.urgency;
-      document.getElementById('title').value = item.title;
-      document.getElementById('content').value = item.content;
-      document.getElementById('author').value = item.author;
-      document.getElementById('contact').value = item.contact;
-      document.getElementById('link').value = item.link;
-      document.getElementById('pinned').checked = item.pinned;
-
-      const toLocalISOString = (iso) => iso ? new Date(new Date(iso).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : '';
-      document.getElementById('publishDate').value = toLocalISOString(item.publishDate);
-      document.getElementById('expireDate').value = toLocalISOString(item.expireDate);
-
-      document.querySelectorAll('.aud').forEach(chk => {
-          chk.checked = (item.audiences || []).includes(chk.value);
-      });
-
-      showForm(true);
+        announceList.innerHTML = data.length ? data.map(cardHTML).join('') : `<div class="col-span-full text-center p-8">ไม่พบประกาศ</div>`;
     }
 
-    function deleteItem(id) {
-      if (confirm('คุณต้องการลบประกาศนี้ใช่หรือไม่?')) {
-        announces = announces.filter(it => it.id != id);
-        saveLocal(announces);
-        renderList();
-      }
-    }
-
-    function closeModal(){
-      successModal.classList.add('hidden');
-      successModal.classList.remove('flex');
-      showList();
-    }
-
-    /* ---------- Detail Modal Functions (ฟังก์ชันใหม่) ---------- */
-    function showDetailModal(id) {
-        const it = announces.find(item => item.id == id);
-        if (!it) return;
-
-        detailModalContent.innerHTML = `
-          <button onclick="closeDetailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-          </button>
-          <div class="flex items-center justify-between mb-4">
+    function cardHTML(it) {
+        return `
+        <div class="bg-white rounded-xl card-shadow flex flex-col transition transform hover:-translate-y-1 hover:shadow-xl ${isExpired(it) ? 'opacity-60' : ''}">
+          <div class="p-6 flex-grow cursor-pointer hover:bg-gray-50/50 rounded-t-xl" onclick="showDetailModal('${it.id}')">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
               <div class="flex gap-2 items-center flex-wrap">
-                  ${it.pinned ? `<span title="ปักหมุด" class="chip bg-yellow-100 text-yellow-800">ปักหมุด</span>` : ''}
-                  <span class="chip ${getUrgencyColor(it.urgency)}">${it.urgency}</span>
-              </div>
-              <span class="chip ${getCategoryColor(it.category)}">${it.category}</span>
-          </div>
-          <h3 class="text-2xl font-bold text-gray-900 mb-2">${escapeHTML(it.title)}</h3>
-          <div class="text-xs text-gray-500 mb-4 border-b pb-3">
-            <span>ผู้ประกาศ: ${escapeHTML(it.author)} ${it.contact ? `· ${escapeHTML(it.contact)}` : ''}</span>
-            <br>
-            <span>เผยแพร่: ${thDate(it.publishDate)}${isExpired(it) ? ' · <span class="text-red-600">หมดอายุแล้ว</span>' : ''}</span>
-          </div>
-          <div class="prose max-w-none text-gray-700 mb-4" style="white-space: pre-wrap;">${escapeHTML(it.content)}</div>
-          <div class="flex flex-wrap gap-2 items-center mb-4"><strong class="text-sm">กลุ่มเป้าหมาย:</strong> ${audiencesBadges(it.audiences)}</div>
-          ${it.link ? `<div class="mt-4 text-sm"><strong>ลิงก์ที่เกี่ยวข้อง:</strong> <a class="text-indigo-600 hover:underline break-all" href="${encodeURI(it.link)}" target="_blank" rel="noopener">${escapeHTML(it.link)}</a></div>` : ''}
-        `;
-        detailModal.classList.remove('hidden');
-        detailModal.classList.add('flex');
-    }
-
-    function closeDetailModal() {
-        detailModal.classList.add('hidden');
-        detailModal.classList.remove('flex');
-    }
-
-
-    /* ---------- Render list with filters ---------- */
-    function isExpired(item){
-      if(!item.expireDate) return false;
-      return new Date(item.expireDate).getTime() < Date.now();
-    }
-
-    function renderList(){
-      const q = (document.getElementById('q').value || '').toLowerCase();
-      const cat = document.getElementById('filterCategory').value;
-      const urg = document.getElementById('filterUrgency').value;
-      const aud = document.getElementById('filterAudience').value;
-      const sort = document.getElementById('sortBy').value;
-      const showExp = document.getElementById('showExpired').checked;
-
-      let data = announces.slice();
-
-      data = data.filter(it=>{
-        const hitQ = [it.title, it.content, it.author, it.category, it.urgency].join(' ').toLowerCase().includes(q);
-        const hitCat = (cat==='all') || it.category===cat;
-        const hitUrg = (urg==='all') || it.urgency===urg;
-        const hitAud = (aud==='all') || (it.audiences||[]).includes(aud);
-        const exp = isExpired(it);
-        const passExp = showExp ? true : !exp;
-        return hitQ && hitCat && hitUrg && hitAud && passExp;
-      });
-
-      data.sort((a,b)=>{
-        if(sort==='pinned'){
-          if((b.pinned?1:0)!==(a.pinned?1:0)) return (b.pinned?1:0)-(a.pinned?1:0);
-          return new Date(b.publishDate)-new Date(a.publishDate);
-        }
-        if(sort==='oldest') return new Date(a.publishDate)-new Date(b.publishDate);
-        return new Date(b.publishDate)-new Date(a.publishDate);
-      });
-
-      announceList.innerHTML = data.map(it => cardHTML(it)).join('');
-
-      if(data.length===0){
-        announceList.innerHTML = `
-          <div class="col-span-full">
-            <div class="bg-white rounded-xl card-shadow p-10 text-center text-gray-600">
-              ไม่พบประกาศที่ตรงกับเงื่อนไขการค้นหา/กรอง
-            </div>
-          </div>`;
-      }
-    }
-
-    function audiencesBadges(auds){
-      return (auds||[]).map(a=>`<span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">${a}</span>`).join(' ');
-    }
-
-    function cardHTML(it){
-      const exp = isExpired(it);
-      return `
-        <div class="bg-white rounded-xl card-shadow flex flex-col transition transform hover:-translate-y-1 hover:shadow-xl ${exp ? 'opacity-60' : ''}">
-          <div class="p-6 flex-grow cursor-pointer hover:bg-gray-50/50 rounded-t-xl" onclick="showDetailModal(${it.id})">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex gap-2 items-center flex-wrap">
-                ${it.pinned ? `<span title="ปักหมุด" class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold">ปักหมุด</span>`:''}
+                ${it.pinned ? `<span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-semibold">ปักหมุด</span>` : ''}
                 <span class="chip ${getUrgencyColor(it.urgency)}">${it.urgency}</span>
               </div>
               <span class="chip ${getCategoryColor(it.category)}">${it.category}</span>
             </div>
             <h3 class="text-lg font-bold text-gray-800 mb-1">${escapeHTML(it.title)}</h3>
             <p class="text-gray-600 text-sm line-clamp-3 mb-3">${escapeHTML(it.content)}</p>
-            <div class="flex flex-wrap gap-2 mb-3">${audiencesBadges(it.audiences)}</div>
           </div>
           <div class="border-t p-3 bg-gray-50 rounded-b-xl flex items-center justify-between text-xs text-gray-500">
-            <div>
-              <span title="วันที่เผยแพร่">${thDate(it.publishDate)}</span>
-              ${isExpired(it) ? ' <span class="text-red-600 font-semibold">· หมดอายุ</span>' : ''}
-            </div>
+            <span>${thDate(it.publishDate)}${isExpired(it) ? ' <span class="text-red-600 font-semibold">· หมดอายุ</span>' : ''}</span>
             <div class="flex gap-2">
-              <button onclick="editItem(${it.id})" class="text-gray-500 hover:text-indigo-600" title="แก้ไข">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/></svg>
-              </button>
-              <button onclick="deleteItem(${it.id})" class="text-gray-500 hover:text-red-600" title="ลบ">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"/></svg>
-              </button>
+              <button onclick="editItem('${it.id}')" title="แก้ไข"><svg class="w-5 h-5 text-gray-500 hover:text-indigo-600" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"/></svg></button>
+              <button onclick="deleteItem('${it.id}')" title="ลบ"><svg class="w-5 h-5 text-gray-500 hover:text-red-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"/></svg></button>
             </div>
           </div>
-        </div>
-      `;
+        </div>`;
     }
 
-    /* ---------- Event wiring (ปรับปรุง) ---------- */
-    function setupEventListeners() {
-      ['q','filterCategory','filterUrgency','filterAudience','sortBy','showExpired']
-        .forEach(id => document.getElementById(id).addEventListener('input', renderList));
-      
-      document.getElementById('clearFiltersBtn').addEventListener('click', () => {
-          document.getElementById('q').value = '';
-          document.getElementById('filterCategory').value = 'all';
-          document.getElementById('filterUrgency').value = 'all';
-          document.getElementById('filterAudience').value = 'all';
-          document.getElementById('sortBy').value = 'latest';
-          document.getElementById('showExpired').checked = false;
-          renderChips('all');
-          renderList();
-      });
+    function showDetailModal(id) {
+        const it = announces.find(item => item.id == id);
+        if (!it) return;
+        detailModalContent.innerHTML = `
+          <button onclick="closeDetailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+          <div class="flex items-start justify-between mb-4 flex-wrap gap-2">
+            <div class="flex gap-2 items-center flex-wrap">
+              ${it.pinned ? `<span class="chip bg-yellow-100 text-yellow-800">ปักหมุด</span>` : ''}
+              <span class="chip ${getUrgencyColor(it.urgency)}">${it.urgency}</span>
+            </div>
+            <span class="chip ${getCategoryColor(it.category)}">${it.category}</span>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-2">${escapeHTML(it.title)}</h3>
+          <div class="text-xs text-gray-500 mb-4 border-b pb-3">
+            <span>ผู้ประกาศ: ${escapeHTML(it.author)} ${it.contact ? `· ${escapeHTML(it.contact)}` : ''}</span><br>
+            <span>เผยแพร่: ${thDate(it.publishDate)}${isExpired(it) ? ' · <span class="text-red-600">หมดอายุแล้ว</span>' : ''}</span>
+          </div>
+          <div class="prose max-w-none text-gray-700 mb-4" style="white-space: pre-wrap;">${escapeHTML(it.content)}</div>
+          <div class="flex flex-wrap gap-2 items-center mb-4"><strong class="text-sm">กลุ่มเป้าหมาย:</strong> ${audiencesBadges(it.audiences)}</div>
+          ${it.link ? `<div class="mt-4 text-sm"><strong>ลิงก์:</strong> <a class="text-indigo-600 hover:underline break-all" href="${encodeURI(it.link)}" target="_blank" rel="noopener">${escapeHTML(it.link)}</a></div>` : ''}
+        `;
+        detailModal.classList.remove('hidden');
     }
-
-    /* ---------- Footer clock ---------- */
-    function tick(){ document.getElementById('now').textContent = nowStr(); }
-    setInterval(tick, 1000); tick();
-
-    /* ---------- Initial Load ---------- */
+    
+    function editItem(id) {
+        const item = announces.find(it => it.id == id);
+        if (!item) return;
+        document.querySelector('#formSection h2').textContent = 'แก้ไขประกาศ';
+        Object.keys(item).forEach(key => {
+            const el = document.getElementById(key);
+            if (el) {
+                if (el.type === 'checkbox') el.checked = item[key];
+                else if (el.type === 'datetime-local') el.value = toLocalISOString(item[key]);
+                else el.value = item[key];
+            }
+        });
+        document.getElementById('editId').value = item.id;
+        document.querySelectorAll('.aud').forEach(chk => { chk.checked = (item.audiences || []).includes(chk.value); });
+        showForm(true);
+    }
+    
+    /* ---------- Initial Load & Event Listeners ---------- */
     function init() {
-      renderChips('all');
-      setupEventListeners();
-      showList();
+        CATEGORIES.forEach(c => {
+            const opt = document.createElement('option');
+            opt.textContent = c; opt.value = c;
+            filterCategory.appendChild(opt);
+        });
+        const chipElement = (label, value, active) => {
+            const btn = document.createElement('button');
+            btn.className = `px-4 py-2 rounded-full text-sm ${active ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} hover:opacity-90 transition`;
+            btn.textContent = label;
+            btn.onclick = () => { document.getElementById('filterCategory').value = value; renderChips(value); renderList(); };
+            return btn;
+        };
+        const renderChips = (active = 'all') => {
+            chipBar.innerHTML = '';
+            chipBar.appendChild(chipElement('ทั้งหมด', 'all', active === 'all'));
+            CATEGORIES.forEach(c => chipBar.appendChild(chipElement(c, c, active === c)));
+        };
+        renderChips('all');
+
+        ['q', 'filterCategory', 'filterUrgency', 'filterAudience', 'sortBy', 'showExpired'].forEach(id => document.getElementById(id).addEventListener('input', renderList));
+        document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+            document.getElementById('q').value = '';
+            filterCategory.value = 'all';
+            document.getElementById('filterUrgency').value = 'all';
+            document.getElementById('filterAudience').value = 'all';
+            document.getElementById('sortBy').value = 'latest';
+            document.getElementById('showExpired').checked = false;
+            renderChips('all');
+            renderList();
+        });
+        showList();
     }
 
     init();
